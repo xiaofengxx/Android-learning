@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static Context context;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         new To_Deal(new GetForumList(),new NMBCallBcak(){
             @Override
             public void run(Object... objects) {
-                Fgroup fgroup = (Fgroup) objects[0];
+                List<Fgroup> fgroups = (List<Fgroup>) objects[0];
             }
         }).start();
         System.out.println("END-------------------------END");

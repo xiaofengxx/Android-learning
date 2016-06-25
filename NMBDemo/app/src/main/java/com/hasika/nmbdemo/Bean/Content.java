@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by HaSiKa on 2016/6/10.
  */
-public class Content {
+public class Content implements The_Type{
     private String id;
     private String img;
     private String ext;
@@ -118,5 +118,10 @@ public class Content {
 
     public void setReplyCount(String replyCount) {
         this.replyCount = replyCount;
+    }
+
+    @Override
+    public int get_type() {
+        return _Content;
     }
 }

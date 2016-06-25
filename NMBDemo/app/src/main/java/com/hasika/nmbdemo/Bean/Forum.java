@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by HaSiKa on 2016/6/10.
  */
-public class Forum {
+public class Forum implements The_Type{
     private String id;
     private String sort;
     private String name;
@@ -95,6 +95,11 @@ public class Forum {
 
     public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
+    }
+
+    @Override
+    public int get_type() {
+        return _Forum;
     }
 }
 

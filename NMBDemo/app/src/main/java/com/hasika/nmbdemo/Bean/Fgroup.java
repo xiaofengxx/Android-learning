@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by HaSiKa on 2016/6/10.
  */
-public class Fgroup {
+public class Fgroup implements The_Type{
     private String id;
     private String sort;
     private String name;
@@ -64,5 +64,10 @@ public class Fgroup {
 
     public void setForums_list(List<Forum> forums_list) {
         this.forums_list = forums_list;
+    }
+
+    @Override
+    public int get_type() {
+        return _Fgroup;
     }
 }

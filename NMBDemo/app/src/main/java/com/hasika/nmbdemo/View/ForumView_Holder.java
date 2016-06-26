@@ -15,20 +15,23 @@ import com.hasika.nmbdemo.R;
  */
 public class ForumView_Holder {
     private SparseArray<View> sparseArray;
-    private View mViews;
+    private View mRootview;
     public ForumView_Holder(@NonNull Context context, @LayoutRes int layoutResid){
         this(context,layoutResid,null);
     }
     public ForumView_Holder(@NonNull Context context, @LayoutRes int layoutResid,ViewGroup rootview){
-        mViews = View.inflate(context,layoutResid,rootview);
-        mViews.setTag(this);
+        mRootview = View.inflate(context,layoutResid,rootview);
+        mRootview.setTag(this);
         sparseArray = new SparseArray<>();
 
+    }
+    public View getmRootview(){
+        return mRootview;
     }
     public <V extends View> V getView(@IdRes int viewidRes){
         View view = sparseArray.get(viewidRes,null);
         if(view == null) {
-            view = mViews.findViewById(viewidRes);
+            view = mRootview.findViewById(viewidRes);
             sparseArray.put(viewidRes,view);
         }
         return (V) view;

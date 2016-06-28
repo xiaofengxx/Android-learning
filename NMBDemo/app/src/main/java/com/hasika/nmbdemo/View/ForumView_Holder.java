@@ -7,13 +7,15 @@ import android.support.annotation.NonNull;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.hasika.nmbdemo.R;
+import com.hasika.nmbdemo.Bean.The_Type;
 
 /**
  * Created by HaSiKa on 2016/6/16.
  */
-public class ForumView_Holder {
+public class ForumView_Holder implements The_Type{
+    private int the_type;
     private SparseArray<View> sparseArray;
     private View mRootview;
     public ForumView_Holder(@NonNull Context context, @LayoutRes int layoutResid){
@@ -37,6 +39,23 @@ public class ForumView_Holder {
         return (V) view;
     }
 
+    public ForumView_Holder setText(@IdRes int viewResId, CharSequence text) {
+        TextView tv = getView(viewResId);
+        tv.setText(text);
+        return this;
+    }
 
+    public ForumView_Holder set_type(int type){
+        this.the_type = type;
+        return this;
+    }
+    @Override
+    public int get_type() {
+        return the_type;
+    }
 
+    @Override
+    public String getName() {
+        return null;
+    }
 }

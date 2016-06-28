@@ -3,6 +3,7 @@ package com.hasika.nmbdemo;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
+import android.widget.TextView;
 import com.hasika.nmbdemo.Bean.Fgroup;
+import com.hasika.nmbdemo.Bean.Forum;
+import com.hasika.nmbdemo.Bean.The_Type;
 import com.hasika.nmbdemo.DAO.GetForumList;
 import com.hasika.nmbdemo.DAO.To_Deal;
 import com.hasika.nmbdemo.View.ForumView_Holder;
@@ -21,18 +24,22 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static Context context;
     private ListView listView;
+    private ListView main_listView;
+    private static DrawerLayout drawerLayout;
+    private static TextView title;
     private MyAdapter myAdapter = new MyAdapter();
     private static Handler handler;
     /**
      * handler the what;
      */
     private static final int SET_ADAPTER  = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawerlayout);
+        title = (TextView) findViewById(R.id.toolbar_title);
         handler = new Myhandler();
         new To_Deal(new GetForumList(),new NMBCallBcak(){
             @Override
@@ -48,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.forum_list);
     }
     public static Handler MyHandlerManager(){return handler;}
-    public static Context MyContextManager(){
-        return context;
+    public static Context MyContextManager(){return context;}
+    public static DrawerLayout CloseDrawerLayout(){
+        drawerLayout.closeDrawers();
+        return drawerLayout;}
+    public static TextView ChangeTitle(String txt){
+        title.setText(txt);
+        return title;
     }
     class MyAdapter extends BaseAdapter{
         int count;
@@ -90,9 +102,39 @@ public class MainActivity extends AppCompatActivity {
          */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ForumView_Holder forumView_holder = new ForumView_Holder(context,R.layout.forum_item_view);
-            return forumView_holder.getmRootview();
+            //ForumView_Holder forumView_holder = new ForumView_Holder(context,R.layout.forum_item_view);
+            ForumView_Holder forumView_holder = null;
+            The_Type the_type = getFromposition(position);
+            if(convertView == null)
+                convertView = new ForumView_Holder(context,R.layout.forum_item_view).set_type(the_type.get_type()).getmRootview();
+            else if(((The_Type)convertView.getTag()).get_type() != the_type.get_type())
+                convertView = new ForumView_Holder(context,R.layout.forum_item_view).set_type(the_type.get_type()).getmRootview();
+            forumView_holder = (ForumView_Holder) convertView.getTag();
+            forumView_holder.setText(R.id.forum_showname,the_type.getName());
+            if(the_type.get_type() == The_Type._Forum)
+                forumView_holder.setText(R.id.forum_id,((Forum)the_type).getId());
+            else {
+                TextView textView = forumView_holder.getView(R.id.forum_showname);
+                textView.setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+            return convertView;
         }
+        private The_Type getFromposition(int position){
+            The_Type the_type = null;
+            for(int i = 0; position >= 0 ; i++){
+                Fgroup fgroup = fgroups.get(i);
+                if(position == 0) {
+                    the_type = fgroup;
+                    break;
+                }
+                position -- ;
+                if(position < fgroup.getForums_list().size())
+                    the_type = fgroup.getForums_list().get(position);
+                position -= fgroup.getForums_list().size();
+            }
+            return the_type;
+        }
+
 
     }
     class Myhandler extends Handler{

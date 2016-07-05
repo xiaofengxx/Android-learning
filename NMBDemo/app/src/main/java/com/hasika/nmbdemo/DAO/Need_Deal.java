@@ -28,7 +28,6 @@ public  abstract class Need_Deal {
     public String get_Json() {
         return json;
     }
-
     public String get_HeaderField() {
         return HeaderField;
     }

@@ -1,5 +1,10 @@
 package com.hasika.nmbdemo.Bean;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +21,12 @@ public class Content implements The_Type{
     private String title;
     private String content;
     private Boolean admin;
-    private String replyCount;
+    private int replyCount;
     private List<Content> replys;
     private int page;
 
     public Content(){
-
+        replyCount = -1;
     }
 
     public List<Content> getReplys() {
@@ -99,7 +104,6 @@ public class Content implements The_Type{
     public String getContent() {
         return content;
     }
-
     public void setContent(String content) {
         this.content = content;
     }
@@ -108,20 +112,66 @@ public class Content implements The_Type{
         return admin;
     }
 
-    public void setAdmin(Boolean admin) {
-        this.admin = admin;
+    public void setAdmin(int admin) {
+        this.admin = !(admin == 0);
     }
 
-    public String getReplyCount() {
+    public int getReplyCount() {
         return replyCount;
     }
-
-    public void setReplyCount(String replyCount) {
+    public void setReplyCount(int replyCount) {
         this.replyCount = replyCount;
     }
-
+    public int getPage() {
+        return page;
+    }
+    public void setPage(int page) {
+        this.page = page;
+    }
     @Override
     public int get_type() {
-        return _Content;
+        if(Integer.valueOf(replyCount).intValue() <0)
+            return _Content_normal;
+        return _Content_root;
     }
+
+    public static Content getThread(JSONObject jsonObject){
+        Content content = null;
+        try {
+            content = getContent(jsonObject);
+            content.setReplyCount(jsonObject.getInt("replyCount"));
+            if(content.getReplyCount() <= 0)
+                return content;
+            JSONArray jsonArray = jsonObject.getJSONArray("replys");
+            List<Content> list = new ArrayList<>();
+            for(int i = 0 ; i < jsonArray.length() ; i++ ){
+                list.add(getContent(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if(content == null)
+            System.out.println("有点奇怪");
+        return content;
+    }
+    public static Content getContent(JSONObject jsonObject){
+        Content content = new Content();
+        try {
+            content.setId(jsonObject.getString("id"));
+            content.setImg(jsonObject.getString("img"));
+            content.setExt(jsonObject.getString("ext"));
+            content.setNow(jsonObject.getString("now"));
+            content.setUserid(jsonObject.getString("userid"));
+            content.setName(jsonObject.getString("name"));
+            content.setEmail(jsonObject.getString("email"));
+            content.setTitle(jsonObject.getString("title"));
+            content.setContent(jsonObject.getString("content"));
+            content.setAdmin(jsonObject.getInt("admin"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return content;
+    }
+
+
 }

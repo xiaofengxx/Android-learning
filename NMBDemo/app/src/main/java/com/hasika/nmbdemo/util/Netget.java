@@ -41,6 +41,7 @@ public class Netget {
         HttpsURLConnection conn = null;
         try {
             URL url = new URL(host+param+NMB_AppID);
+            System.out.println("访问链接 :"+url.toString());
             conn = (HttpsURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setReadTimeout(5000);

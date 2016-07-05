@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hasika.nmbdemo.Bean.The_Type;
+import com.hasika.nmbdemo.MainActivity;
+import com.hasika.nmbdemo.R;
 
 /**
  * Created by HaSiKa on 2016/6/16.
@@ -38,7 +40,22 @@ public class ForumView_Holder implements The_Type{
         }
         return (V) view;
     }
+    public ForumView_Holder changed(){
+        mRootview.setBackgroundColor(MainActivity.MyContextManager().getResources().getColor(R.color.ggg));
+        ((TextView)getView(R.id.forum_showname)).setTextColor(MainActivity.MyContextManager().getResources().getColor(R.color.chooseed));
+        return this;
+    }
 
+    public ForumView_Holder H2O2(){
+        mRootview.setBackgroundColor(MainActivity.MyContextManager().getResources().getColor(R.color.cc));
+        ((TextView)getView(R.id.forum_showname)).setTextColor((MainActivity.MyContextManager().getResources().getColor(R.color.black)));
+        return this;
+    }
+    public ForumView_Holder setBackgroundColor(@IdRes int viewResId,int color) {
+        View view = getView(viewResId);
+        view.setBackgroundColor(color);
+        return this;
+    }
     public ForumView_Holder setText(@IdRes int viewResId, CharSequence text) {
         TextView tv = getView(viewResId);
         tv.setText(text);
